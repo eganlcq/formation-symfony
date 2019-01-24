@@ -4,40 +4,83 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use Faker\Factory;
+use App\Entity\User;
 use App\Entity\Image;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder) {
+
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr-FR');
+        $faker  = Factory::create('fr-FR');
+        $users  = [];
+        $genres = ['men', 'women'];
+
+        for($i = 1; $i <= 10; $i++) {
+
+            $user               = new User();
+            $genre              = $faker->randomElement($genres);
+            $pictureId          = $faker->numberBetween(1, 99) . '.jpg';
+
+            $userPicture        = 'https://randomuser.me/api/portraits/' . $genre . '/' . $pictureId;
+            $userFirstName      = $faker->firstname($genre);
+            $userLastName       = $faker->lastname;
+            $userEmail          = $faker->email;
+            $userIntroduction   = $faker->sentence();
+            $userDescription    = '<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>';
+            $userHash           = $this->encoder->encodePassword($user, 'password');
+
+            $user->setFirstName($userFirstName)
+                 ->setLastName($userLastName)
+                 ->setEmail($userEmail)
+                 ->setIntroduction($userIntroduction)
+                 ->setDescription($userDescription)
+                 ->setHash($userHash)
+                 ->setPicture($userPicture);
+
+            $manager->persist($user);
+            $users[] = $user;
+        }
 
         for($i = 1; $i <= 30; $i++) {
 
-            $ad = new Ad();
-            $title = $faker->sentence(6);
-            $coverImage = 'https://loremflickr.com/1000/350';
-            $introduction = $faker->paragraph(2);
-            $content = '<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>';
+            $ad             = new Ad();
+            $adTitle        = $faker->sentence(6);
+            $adCoverImage   = 'https://loremflickr.com/1000/350';
+            $adIntroduction = $faker->paragraph(2);
+            $adContent      = '<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>';
+            $adPrice        = mt_rand(40, 200);
+            $adRooms        = mt_rand(1, 5);
+            $adAuthor       = $users[mt_rand(0, count($users) - 1)];
 
-            $ad->setTitle($title)
-               ->setCoverImage($coverImage)
-               ->setIntroduction($introduction)
-               ->setContent($content)
-               ->setPrice(mt_rand(40, 200))
-               ->setRooms(mt_rand(1, 5));
+            $ad->setTitle($adTitle)
+               ->setCoverImage($adCoverImage)
+               ->setIntroduction($adIntroduction)
+               ->setContent($adContent)
+               ->setPrice($adPrice)
+               ->setRooms($adRooms)
+               ->setAuthor($adAuthor);
 
             for($j = 1; $j <= mt_rand(2, 5); $j++) {
 
-                $image = new Image();
-                $url = 'https://loremflickr.com/640/480';
-                $caption = $faker->sentence();
+                $image          = new Image();
+                $imageURL       = 'https://loremflickr.com/640/480';
+                $imageCaption   = $faker->sentence();
+                $imageAd        = $ad;
 
-                $image->setUrl($url)
-                      ->setCaption($caption)
-                      ->setAd($ad);
+                $image->setUrl($imageURL)
+                      ->setCaption($imageCaption)
+                      ->setAd($imageAd);
 
                 $manager->persist($image);
             }
