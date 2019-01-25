@@ -5,15 +5,15 @@
         <title>SymBNB - {% block title %}Welcome!{% endblock %}</title>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/app.css">
+        {% block stylesheets %}{% endblock %}
         <script src="/js/jquery.min.js"></script>
         <script src="/js/popper.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
-        {% block stylesheets %}{% endblock %}
+        {% block javascripts %}{% endblock %}
     </head>
     <body>
         {% include 'common/header.html.twig' %}
         {% block body %}{% endblock %}
         {% include 'common/footer.html.twig' %}
-        {% block javascripts %}{% endblock %}
     </body>
 </html>
