@@ -33,7 +33,7 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Type(type="datetime", message="La date doit être au bon format")
-     * @Assert\GreaterThan("today", message="Vous ne pouvez pas réserver pour cette date")
+     * @Assert\GreaterThan("today", message="Vous ne pouvez pas réserver pour cette date", groups={"front"})
      */
     private $startDate;
 
@@ -61,6 +61,7 @@ class Booking
 
     /**
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function prePersist() {
 

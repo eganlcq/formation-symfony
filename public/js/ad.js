@@ -19,7 +19,6 @@ function handleDeleteButtons() {
 function updateCounter() {
 
     const count = +$('#annonce_images div.form-group').length;
-    console.log(count);
     $('#widgets-counter').val(count);
 }
 

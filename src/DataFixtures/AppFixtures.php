@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Booking;
+use App\Entity\Comment;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -125,6 +126,21 @@ class AppFixtures extends Fixture
                         ->setComment($bookingComment);
 
                 $manager->persist($booking);
+
+                if(mt_rand(0, 1)) {
+
+                    $comment        = new Comment();
+                    $commentContent = $faker->paragraph();
+                    $commentRating  = mt_rand(1, 5);
+                    $commentAuthor  = $bookingBooker;
+
+                    $comment->setContent($commentContent)
+                            ->setRating($commentRating)
+                            ->setAuthor($commentAuthor)
+                            ->setAd($ad);
+
+                    $manager->persist($comment);
+                }
             }
 
             $manager->persist($ad);

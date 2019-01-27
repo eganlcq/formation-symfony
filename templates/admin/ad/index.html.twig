@@ -1,0 +1,42 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration des annonces{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="my-5">Administration des annonces</h1>
+    <table class="table table-hover align-items-center">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Réservations</th>
+                <th>Note</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ad in ads %}
+            {% set author = ad.author %}
+            <tr>
+                <td class="align-middle">{{ ad.id }}</td>
+                <td class="align-middle">{{ ad.title }}</td>
+                <td class="align-middle">
+                    <img src="{{ author.picture }}" alt="Avatar de {{ author.fullName }}" class="avatar avatar-mini mr-2"> 
+                    {{ author.fullName }}
+                </td>
+                <td class="align-middle">
+                    <span class="badge badge-primary rounded">{{ ad.bookings | length }} réservation(s)</span>
+                </td>
+                <td class="align-middle">{% include 'common/rating.html.twig' with {'rating': ad.avgRatings} %}</td>
+                <td class="align-middle text-right">
+                    <a href="{{ path('admin_ads_edit', {'id': ad.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('admin_ads_delete', {'id': ad.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
