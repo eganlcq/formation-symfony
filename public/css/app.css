@@ -66,3 +66,27 @@ span.rating i {
 
     color: white;
 }
+
+.pagination>li>a {
+
+    background: #375a7f;
+    color: white;
+}
+
+.pagination>li>a:hover {
+
+    background: #3498DB;
+    color: white;
+}
+
+.pagination>li.page-item.active>a {
+
+    background: #3498DB;
+    color: white;
+}
+
+.pagination>li.page-item.disabled>a {
+
+    background: #303e4f;
+    color: white;
+}

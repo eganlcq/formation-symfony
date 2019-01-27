@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for ad in ads %}
+            {% for ad in pagination.data %}
             {% set author = ad.author %}
             <tr>
                 <td class="align-middle">{{ ad.id }}</td>
@@ -38,5 +38,6 @@
             {% endfor %}
         </tbody>
     </table>
+    {{ pagination.display() }}
 </div>
 {% endblock %}
