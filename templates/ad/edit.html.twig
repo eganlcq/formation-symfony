@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edition d'une annonce{% endblock %}
-{% block javascripts %}<script src="/js/ad.js"></script>{% endblock %}
+{% block javascripts %} <script src="{{ asset('build/js/ad.js') }}"></script> {% endblock %}
 
 {% form_theme form 'ad/_collection.html.twig' %}
 
