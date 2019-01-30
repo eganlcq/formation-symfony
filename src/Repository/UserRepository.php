@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Repository;
-
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
@@ -18,9 +15,7 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
-
     public function findBestUsers($limit = 2) {
-
         return $this->createQueryBuilder('u')
                     ->select('u as user, AVG(c.rating) as avgRating, COUNT(c) as sumComments')
                     ->join('u.ads', 'a')
@@ -32,7 +27,6 @@ class UserRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getResult();
     }
-
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
@@ -49,7 +43,6 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
-
     /*
     public function findOneBySomeField($value): ?User
     {
